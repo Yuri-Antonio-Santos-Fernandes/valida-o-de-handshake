@@ -1,0 +1,7 @@
+GUI: HC101100R001101K101100F | esperado=(True, True) | obtido=(True, True)
+GUI: HC101100R101101K101100F | esperado=(False, None) | obtido=(False, None)
+GUI: HC101100R001101K101101F | esperado=(True, False) | obtido=(True, False)
+GUI: Somente AP aceitou a cadeia válida.
+GUI: Somente ALL aceitou a cadeia válida.
+GUI: ERRO: Símbolo '?' na posição 23 não pertence ao alfabeto HCRKF01.
+GUI: execução automática, pausa e reinício verificados.

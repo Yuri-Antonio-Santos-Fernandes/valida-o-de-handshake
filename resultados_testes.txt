@@ -1,0 +1,50 @@
+
+=== AP ===
+HC101100R001101K101100F (23) | esperado=True | obtido=True | estrutura e resposta inversa
+HC00000R00000K00000F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC11111R11111K11111F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC01010R01010K01010F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC10101R10101K10101F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC11000R00011K11000F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC00111R11100K10101F (20) | esperado=True | obtido=True | estrutura e resposta inversa
+HC100101R101001K0000000F (24) | esperado=True | obtido=True | estrutura e resposta inversa
+HC101100R101101K101100F (23) | esperado=False | obtido=False | bit da resposta incompatível com topo
+HC101100R00110K101100F (22) | esperado=False | obtido=False | resposta curta; pilha não esvaziou
+HC101100R0011011K101100F (24) | esperado=False | obtido=False | resposta longa; esperava K
+HH101100R001101K101100F (23) | esperado=False | obtido=False | C obrigatório após H
+HC101100K001101R101100F (23) | esperado=False | obtido=False | ordem R/K incorreta
+HC101100R001101K101100 (22) | esperado=False | obtido=False | F obrigatório
+HC101100R001101K101100FF (24) | esperado=False | obtido=False | símbolo após estado final
+HC101100R001101KF00000 (22) | esperado=False | obtido=False | confirmação não vazia e F final
+HC0R0K0F (8) | esperado=True | obtido=True | menor entrada válida; exceção de caso-limite
+ε (0) | esperado=False | obtido=False | entrada vazia; exceção de caso-limite
+
+=== ALL ===
+HC101100R001101K101100F (23) | esperado=True | obtido=True | correspondência exata nos três campos
+HC00000R00000K00000F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC11111R11111K11111F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC01010R01010K01010F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC10101R10101K10101F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC11000R00011K11000F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC00111R11100K00111F (20) | esperado=True | obtido=True | correspondência exata nos três campos
+HC100101R101001K100101F (23) | esperado=True | obtido=True | correspondência exata nos três campos
+HC101100R001101K101101F (23) | esperado=False | obtido=False | bit diferente na confirmação
+HC101100R101101K101100F (23) | esperado=False | obtido=False | bit diferente na resposta
+HC101100R001101K10110F (22) | esperado=False | obtido=False | confirmação curta
+HC101100R001101K1011000F (24) | esperado=False | obtido=False | sobra na confirmação
+HC101100R00110K101100F (22) | esperado=False | obtido=False | resposta curta
+HC101100R0011010K101100F (24) | esperado=False | obtido=False | sobra na resposta
+HC101100R001101K101100FF (24) | esperado=False | obtido=False | F deve ser último
+HC101100R001101K010011F (23) | esperado=False | obtido=False | mesmo tamanho, conteúdo diferente
+HC0R0K0F (8) | esperado=True | obtido=True | menor entrada válida; exceção de caso-limite
+ε (0) | esperado=False | obtido=False | entrada vazia; exceção de caso-limite
+
+=== INTEGRAÇÃO ===
+HC101100R001101K101100F | esperado=(True, True) | obtido=(True, True) | válido
+HC101100R101101K101100F | esperado=(False, None) | obtido=(False, None) | ALL não executado
+HC101100R001101K101101F | esperado=(True, False) | obtido=(True, False) | confirmação incorreta
+
+HC101100R001101K101100F? | esperado=erro de alfabeto | obtido=Símbolo '?' na posição 23 não pertence ao alfabeto HCRKF01.
+
+40/40 verificações obrigatórias e casos-limite passaram.
+6750 verificações adicionais por enumeração de campos binários (oráculo externo).
