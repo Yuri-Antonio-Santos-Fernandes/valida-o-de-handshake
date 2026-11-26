@@ -2,7 +2,7 @@
 
 ## 1. Problema e escopo
 
-Propomos um protocolo fictício de estabelecimento de conexão por desafio e resposta. O cliente envia `H` (Hello); o servidor envia `C` e um desafio binário não vazio; o cliente envia `R` e a resposta (desafio invertido); o servidor envia `K` e uma confirmação (cópia do desafio); o cliente envia `F` (Finish). O registro contém todos os eventos em ordem. A inversão é didática: não proporciona segurança criptográfica, não é TCP e não representa tráfego real.
+O problema consiste na validação de um protocolo fictício de estabelecimento de conexão por desafio e resposta. O cliente envia `H` (Hello); o servidor envia `C` e um desafio binário não vazio; o cliente envia `R` e a resposta (desafio invertido); o servidor envia `K` e uma confirmação (cópia do desafio); o cliente envia `F` (Finish). O registro contém todos os eventos em ordem. A inversão é didática: não proporciona segurança criptográfica, não é TCP e não representa tráfego real.
 
 Alfabeto de ambos: Σ = {H,C,R,K,F,0,1}. O AP recebe toda a entrada, e, apenas se aceitar, o ALL recebe **a mesma cadeia inteira**. O ALL também pode ser executado independentemente, por isso repete a validação de formato e de conteúdo da resposta. A dependência adicional do fluxo é a igualdade exata entre desafio e confirmação, não só seus tamanhos.
 
@@ -10,7 +10,7 @@ Alfabeto de ambos: Σ = {H,C,R,K,F,0,1}. O AP recebe toda a entrada, e, apenas s
 
 L_AP = { HC w R w^rev K v F | w,v ∈ {0,1}+ }, em que w^rev é w invertida.
 
-Definimos a GLC G = (V, Σ, P, S), com V = {S,B,A}, símbolo inicial S e as seguintes produções:
+GLC G = (V, Σ, P, S), V = {S,B,A}; S inicial; produções:
 
 ```text
 S → H C B K A F
@@ -18,7 +18,7 @@ B → 0 B 0 | 1 B 1 | 0 R 0 | 1 R 1
 A → 0 A | 1 A | 0 | 1
 ```
 
-B gera um desafio não vazio e sua inversão em torno de R. A gera uma confirmação binária não vazia arbitrária. Apresentamos a derivação à esquerda da cadeia selecionada para a demonstração (23 caracteres):
+B gera um desafio não vazio e sua inversão em torno de R. A gera uma confirmação binária não vazia arbitrária. Exemplo de derivação à esquerda da cadeia usada na demonstração (23 caracteres):
 
 ```text
 S ⇒ HCBKAF
@@ -36,7 +36,7 @@ S ⇒ HCBKAF
   ⇒ HC101100R001101K101100F
 ```
 
-**Não regular:** supomos, por contradição, que L_AP seja regular e denotamos por p o comprimento de bombeamento. Escolhemos `HC` seguido de p zeros, `R`, p zeros, `K0F`. Para qualquer decomposição xyz com |xy|≤p e |y|>0, y está antes de R. Bombeando y duas vezes, ou duplicamos H/C (formato inválido), ou aumentamos a quantidade de zeros do desafio sem alterar a resposta. Em ambos os casos saímos da linguagem. Contradição com o lema do bombeamento regular. A GLC acima prova que L_AP é livre de contexto.
+**Não regular:** admite-se, por hipótese, que L_AP seja regular, e considera-se p o comprimento de bombeamento. Considera-se a cadeia formada por `HC` seguido de p zeros, `R`, p zeros, `K0F`. Para qualquer decomposição xyz com |xy|≤p e |y|>0, y está antes de R. Ao bombear y com expoente 2, ocorre a duplicação de H/C (formato inválido) ou o aumento da quantidade de zeros do desafio sem alteração da resposta. Em ambos os casos, a cadeia resultante não pertence à linguagem, o que contradiz o lema do bombeamento regular. A GLC acima prova que L_AP é livre de contexto.
 
 ## 3. Especificação do AP (9 estados)
 
@@ -76,7 +76,7 @@ Tabela δ(q, leitura, topo) = (destino, substituição do topo). b,t ∈ {0,1}; 
 
 L_ALL = { HC w R w^rev K w F | w ∈ {0,1}+ }. O ALL exige correspondência bit a bit, inclusive quando todos os campos têm a mesma quantidade de símbolos. L_ALL é subconjunto próprio de L_AP: `HC101100R001101K101101F` pertence apenas a L_AP.
 
-**Não livre de contexto:** supomos, por contradição, que L_ALL seja livre de contexto e denotamos por p o comprimento do lema do bombeamento para LLC. Consideramos a cadeia `HC 0^p R 0^p K 0^p F` (espaços apenas ilustrativos). Para toda decomposição uvxyz com |vxy|≤p e |vy|>0, bombeamos v e y com expoente 2. Se v ou y contiver um marcador H,C,R,K,F, o marcador será duplicado, invalidando o formato. Caso contrário, v e y contêm somente zeros. A janela vxy não pode alcançar simultaneamente os primeiro e terceiro blocos, pois o bloco intermediário já tem p zeros, além dos separadores. Assim ao menos um dos três blocos não muda, enquanto pelo menos um cresce. A cadeia resultante não pertence a L_ALL. Isso contradiz o lema. A existência do ALL determinístico limitado abaixo prova que L_ALL é sensível ao contexto (caracterização por autômatos linearmente limitados).
+**Não livre de contexto:** admite-se, por hipótese, que L_ALL seja livre de contexto, e considera-se p o comprimento de bombeamento para LLC. Considera-se a cadeia `HC 0^p R 0^p K 0^p F` (espaços apenas ilustrativos). Para toda decomposição uvxyz com |vxy|≤p e |vy|>0, aplica-se o bombeamento de v e y com expoente 2. Se v ou y contiver um marcador H,C,R,K,F, o marcador será duplicado, invalidando o formato. Caso contrário, v e y contêm somente zeros. A janela vxy não pode alcançar simultaneamente os primeiro e terceiro blocos, pois o bloco intermediário já tem p zeros, além dos separadores. Assim ao menos um dos três blocos não muda, enquanto pelo menos um cresce. A cadeia resultante não pertence a L_ALL. Isso contradiz o lema. A existência do ALL determinístico limitado abaixo prova que L_ALL é sensível ao contexto (caracterização por autômatos linearmente limitados).
 
 ## 5. Especificação do ALL (23 estados)
 
@@ -127,13 +127,13 @@ Tabela δ(p, leitura) = (destino, escrita, movimento). `=` significa preservar s
 - AP rejeita (23): `HC101100R101101K101100F`. Após R, topo 0; primeiro bit lido 1, sem transição.
 - ALL rejeita (23): `HC101100R001101K101101F`. AP aceita porque K é binária e não vazia. Na sexta rodada, p15_0 encontra 1 (em vez de 0) e transita para pr. Todos os campos têm o mesmo comprimento.
 
-Uma rodada do ALL para a entrada válida: fita inicial `<HC101100R001101K101100F>`; após marcar a primeira trinca e antes da próxima rodada: `<HCy01100R00110yKy01100F>`. O bit 1 foi guardado em p12_1, p13_1, p14_1, p15_1. No final, `<HCyxyyxxRxxyyxyKyxyyxxF>`. O arquivo `rastreio_exemplo.txt` registra a execução das transições reais e permite acompanhar esse processo integralmente.
+Uma rodada do ALL para a entrada válida: fita inicial `<HC101100R001101K101100F>`; após marcar a primeira trinca e antes da próxima rodada: `<HCy01100R00110yKy01100F>`. O bit 1 foi guardado em p12_1, p13_1, p14_1, p15_1. No final, `<HCyxyyxxRxxyyxyKyxyyxxF>`. O rastreamento completo, obtido a partir das transições reais, encontra-se no arquivo `rastreio_exemplo.txt`.
 
-**Limitação:** reconhecemos que a inversão não constitui uma autenticação segura; a aplicação não implementa rede, temporização nem integridade criptográfica. As varreduras tornam o ALL quadrático em transições. A interface também retém texto de rastreamento para fins didáticos, sem servir de memória de decisão do ALL.
+**Limitação:** a inversão não é uma autenticação segura; a aplicação não implementa rede, temporização nem integridade criptográfica. As varreduras tornam o ALL quadrático em transições. A interface também retém texto de rastreamento para fins didáticos, sem servir de memória de decisão do ALL.
 
-## 7. Fontes teóricas para estudo
+## 7. Referências teóricas
 
 - Sipser, Michael. *Introduction to the Theory of Computation*. 3ª ed., Cengage, 2013. Capítulos 1 (linguagens regulares e bombeamento), 2 (GLC, AP e bombeamento de LLC) e 3 (máquinas de Turing, variantes).
 - Hopcroft, John E.; Motwani, Rajeev; Ullman, Jeffrey D. *Introduction to Automata Theory, Languages, and Computation*. 3ª ed., Pearson, 2006. Autômatos de pilha, máquinas de Turing e linguagens sensíveis ao contexto.
 
-As referências bibliográficas acima são indicadas para fundamentação e aprofundamento dos conceitos utilizados. A consulta a páginas específicas e a conferência bibliográfica pela equipe permanecem pendentes. As demonstrações apresentadas foram desenvolvidas para as linguagens definidas neste projeto. A verificação de possíveis semelhanças com os exercícios realizados em sala também permanece pendente.
+As referências bibliográficas foram indicadas como base para estudo e conferência dos conceitos utilizados; não houve consulta a páginas específicas durante a elaboração desta documentação. As demonstrações apresentadas foram desenvolvidas para as linguagens definidas no projeto. A verificação de possíveis semelhanças com os exercícios realizados em sala permanece pendente de confirmação pela equipe.
