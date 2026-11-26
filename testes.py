@@ -9,37 +9,62 @@ from exemplos import VALIDA, ERRO_AP, ERRO_ALL
 def cadeia(w, r, k): return f'HC{w}R{r}K{k}F'
 
 
+# Casos principais: 32 entradas distintas entre os dois reconhecedores.
+AP_ACEITAS = (
+    (VALIDA, 'estrutura completa; resposta invertida'),
+    ('HC00000R00000K00000F', 'desafio composto apenas por zeros'),
+    ('HC11111R11111K11111F', 'desafio composto apenas por uns'),
+    ('HC01010R01010K01010F', 'desafio palíndromo iniciado em 0'),
+    ('HC10101R10101K10101F', 'desafio palíndromo iniciado em 1'),
+    ('HC11000R00011K11000F', 'inversão não palíndroma'),
+    ('HC00111R11100K10101F', 'confirmação com conteúdo diferente'),
+    ('HC100101R101001K0000000F', 'confirmação mais longa que o desafio'),
+)
+AP_REJEITADAS = (
+    (ERRO_AP, 'bit da resposta incompatível com o topo'),
+    ('HC101100R00110K101100F', 'resposta curta; restam bits acima de Z'),
+    ('HC101100R0011011K101100F', 'resposta longa; esperava K'),
+    ('HH101100R001101K101100F', 'C obrigatório após H'),
+    ('HC101100K001101R101100F', 'ordem R/K incorreta'),
+    ('HC101100R001101K101100', 'F obrigatório'),
+    ('HC101100R001101K101100FF', 'símbolo após estado final'),
+    ('HC101100R001101KF00000', 'confirmação não vazia; F final'),
+)
+ALL_ACEITAS = (
+    ('HC00101R10100K00101F', 'desafio com zeros iniciais'),
+    ('HC11011R11011K11011F', 'desafio palíndromo'),
+    ('HC000000R000000K000000F', 'seis bits iguais a zero'),
+    ('HC111111R111111K111111F', 'seis bits iguais a um'),
+    ('HC010101R101010K010101F', 'alternância iniciada em 0'),
+    ('HC101010R010101K101010F', 'alternância iniciada em 1'),
+    ('HC01110R01110K01110F', 'bloco de uns entre zeros'),
+    ('HC110001R100011K110001F', 'inversão e confirmação com bits mistos'),
+)
+ALL_REJEITADAS = (
+    (ERRO_ALL, 'último bit da confirmação divergente'),
+    ('HC101100R001101K10110F', 'confirmação mais curta'),
+    ('HC101100R001101K1011000F', 'confirmação mais longa'),
+    ('HC101100R001101K010011F', 'mesmas quantidades; ordem diferente'),
+    ('HC01101R10110K11101F', 'primeiro bit da confirmação divergente'),
+    ('HC11010R01011K11000F', 'bit interno da confirmação divergente'),
+    ('HC00101R00100K00101F', 'resposta não corresponde à inversão'),
+    ('HC110001R100011K110001', 'ausência do marcador final F'),
+)
+
+
 def executar():
-    comuns = tuple(cadeia(w, w[::-1], w) for w in ('101100','00000','11111','01010','10101','11000','00111','100101'))
-    # O AP não compara o conteúdo da confirmação: casos aceitos, inclusive com diferença.
-    ap_bons = comuns[:6] + ('HC00111R11100K10101F', 'HC100101R101001K0000000F')
-    ruins_ap = (
-        (ERRO_AP, 'bit da resposta incompatível com topo'),
-        ('HC101100R00110K101100F', 'resposta curta; pilha não esvaziou'),
-        ('HC101100R0011011K101100F', 'resposta longa; esperava K'),
-        ('HH101100R001101K101100F', 'C obrigatório após H'),
-        ('HC101100K001101R101100F', 'ordem R/K incorreta'),
-        ('HC101100R001101K101100', 'F obrigatório'),
-        ('HC101100R001101K101100FF', 'símbolo após estado final'),
-        ('HC101100R001101KF00000', 'confirmação não vazia e F final'),
-    )
-    ruins_all = (
-        (ERRO_ALL, 'bit diferente na confirmação'),
-        (ERRO_AP, 'bit diferente na resposta'),
-        ('HC101100R001101K10110F', 'confirmação curta'),
-        ('HC101100R001101K1011000F', 'sobra na confirmação'),
-        ('HC101100R00110K101100F', 'resposta curta'),
-        ('HC101100R0011010K101100F', 'sobra na resposta'),
-        ('HC101100R001101K101100FF', 'F deve ser último'),
-        ('HC101100R001101K010011F', 'mesmo tamanho, conteúdo diferente'),
-    )
     total = 0
-    for nome, funcao, bons, ruins in (('AP', ap, ap_bons, ruins_ap), ('ALL', all_, comuns, ruins_all)):
+    principais = AP_ACEITAS + AP_REJEITADAS + ALL_ACEITAS + ALL_REJEITADAS
+    assert len(principais) == len({w for w, _ in principais}) == 32
+    assert all(len(w) >= 18 and set(w) <= set('HCRKF01') for w, _ in principais)
+    for nome, funcao, bons, ruins, minimo in (
+        ('AP', ap, AP_ACEITAS, AP_REJEITADAS, 'HC0R0K0F'),
+        ('ALL', all_, ALL_ACEITAS, ALL_REJEITADAS, 'HC1R1K1F'),
+    ):
         print(f'\n=== {nome} ===')
-        casos = tuple((w, True, 'estrutura e resposta inversa' if nome == 'AP' else 'correspondência exata nos três campos') for w in bons) + tuple((w, False, r) for w,r in ruins)
-        assert len({w for w,_,_ in casos}) == 16
-        assert all(len(w) >= 18 for w,_,_ in casos)
-        casos += (('HC0R0K0F', True, 'menor entrada válida; exceção de caso-limite'), ('', False, 'entrada vazia; exceção de caso-limite'))
+        assert len(bons) == len(ruins) == 8
+        casos = tuple((w, True, r) for w, r in bons) + tuple((w, False, r) for w, r in ruins)
+        casos += ((minimo, True, 'menor entrada válida; exceção de caso-limite'), ('', False, 'entrada vazia; exceção de caso-limite'))
         for w, esperado, regra in casos:
             obtido = funcao(w)
             assert obtido == esperado, (nome,w,esperado,obtido)

@@ -1,42 +1,42 @@
 
 === AP ===
-HC101100R001101K101100F (23) | esperado=True | obtido=True | estrutura e resposta inversa
-HC00000R00000K00000F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC11111R11111K11111F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC01010R01010K01010F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC10101R10101K10101F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC11000R00011K11000F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC00111R11100K10101F (20) | esperado=True | obtido=True | estrutura e resposta inversa
-HC100101R101001K0000000F (24) | esperado=True | obtido=True | estrutura e resposta inversa
-HC101100R101101K101100F (23) | esperado=False | obtido=False | bit da resposta incompatível com topo
-HC101100R00110K101100F (22) | esperado=False | obtido=False | resposta curta; pilha não esvaziou
+HC101100R001101K101100F (23) | esperado=True | obtido=True | estrutura completa; resposta invertida
+HC00000R00000K00000F (20) | esperado=True | obtido=True | desafio composto apenas por zeros
+HC11111R11111K11111F (20) | esperado=True | obtido=True | desafio composto apenas por uns
+HC01010R01010K01010F (20) | esperado=True | obtido=True | desafio palíndromo iniciado em 0
+HC10101R10101K10101F (20) | esperado=True | obtido=True | desafio palíndromo iniciado em 1
+HC11000R00011K11000F (20) | esperado=True | obtido=True | inversão não palíndroma
+HC00111R11100K10101F (20) | esperado=True | obtido=True | confirmação com conteúdo diferente
+HC100101R101001K0000000F (24) | esperado=True | obtido=True | confirmação mais longa que o desafio
+HC101100R101101K101100F (23) | esperado=False | obtido=False | bit da resposta incompatível com o topo
+HC101100R00110K101100F (22) | esperado=False | obtido=False | resposta curta; restam bits acima de Z
 HC101100R0011011K101100F (24) | esperado=False | obtido=False | resposta longa; esperava K
 HH101100R001101K101100F (23) | esperado=False | obtido=False | C obrigatório após H
 HC101100K001101R101100F (23) | esperado=False | obtido=False | ordem R/K incorreta
 HC101100R001101K101100 (22) | esperado=False | obtido=False | F obrigatório
 HC101100R001101K101100FF (24) | esperado=False | obtido=False | símbolo após estado final
-HC101100R001101KF00000 (22) | esperado=False | obtido=False | confirmação não vazia e F final
+HC101100R001101KF00000 (22) | esperado=False | obtido=False | confirmação não vazia; F final
 HC0R0K0F (8) | esperado=True | obtido=True | menor entrada válida; exceção de caso-limite
 ε (0) | esperado=False | obtido=False | entrada vazia; exceção de caso-limite
 
 === ALL ===
-HC101100R001101K101100F (23) | esperado=True | obtido=True | correspondência exata nos três campos
-HC00000R00000K00000F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC11111R11111K11111F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC01010R01010K01010F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC10101R10101K10101F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC11000R00011K11000F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC00111R11100K00111F (20) | esperado=True | obtido=True | correspondência exata nos três campos
-HC100101R101001K100101F (23) | esperado=True | obtido=True | correspondência exata nos três campos
-HC101100R001101K101101F (23) | esperado=False | obtido=False | bit diferente na confirmação
-HC101100R101101K101100F (23) | esperado=False | obtido=False | bit diferente na resposta
-HC101100R001101K10110F (22) | esperado=False | obtido=False | confirmação curta
-HC101100R001101K1011000F (24) | esperado=False | obtido=False | sobra na confirmação
-HC101100R00110K101100F (22) | esperado=False | obtido=False | resposta curta
-HC101100R0011010K101100F (24) | esperado=False | obtido=False | sobra na resposta
-HC101100R001101K101100FF (24) | esperado=False | obtido=False | F deve ser último
-HC101100R001101K010011F (23) | esperado=False | obtido=False | mesmo tamanho, conteúdo diferente
-HC0R0K0F (8) | esperado=True | obtido=True | menor entrada válida; exceção de caso-limite
+HC00101R10100K00101F (20) | esperado=True | obtido=True | desafio com zeros iniciais
+HC11011R11011K11011F (20) | esperado=True | obtido=True | desafio palíndromo
+HC000000R000000K000000F (23) | esperado=True | obtido=True | seis bits iguais a zero
+HC111111R111111K111111F (23) | esperado=True | obtido=True | seis bits iguais a um
+HC010101R101010K010101F (23) | esperado=True | obtido=True | alternância iniciada em 0
+HC101010R010101K101010F (23) | esperado=True | obtido=True | alternância iniciada em 1
+HC01110R01110K01110F (20) | esperado=True | obtido=True | bloco de uns entre zeros
+HC110001R100011K110001F (23) | esperado=True | obtido=True | inversão e confirmação com bits mistos
+HC101100R001101K101101F (23) | esperado=False | obtido=False | último bit da confirmação divergente
+HC101100R001101K10110F (22) | esperado=False | obtido=False | confirmação mais curta
+HC101100R001101K1011000F (24) | esperado=False | obtido=False | confirmação mais longa
+HC101100R001101K010011F (23) | esperado=False | obtido=False | mesmas quantidades; ordem diferente
+HC01101R10110K11101F (20) | esperado=False | obtido=False | primeiro bit da confirmação divergente
+HC11010R01011K11000F (20) | esperado=False | obtido=False | bit interno da confirmação divergente
+HC00101R00100K00101F (20) | esperado=False | obtido=False | resposta não corresponde à inversão
+HC110001R100011K110001 (22) | esperado=False | obtido=False | ausência do marcador final F
+HC1R1K1F (8) | esperado=True | obtido=True | menor entrada válida; exceção de caso-limite
 ε (0) | esperado=False | obtido=False | entrada vazia; exceção de caso-limite
 
 === INTEGRAÇÃO ===

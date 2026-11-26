@@ -24,7 +24,7 @@ python gerar_rastreio.py
 python testes_interface.py
 ```
 
-Foram definidos, no arquivo `testes.py`, 8 casos de aceitação e 8 de rejeição distintos para cada módulo, todos com pelo menos 18 símbolos. Além desses casos, foram incluídos a entrada vazia e a menor cadeia válida, de 8 caracteres, como casos-limite, 3 testes de integração e 1 teste de erro de alfabeto. O comportamento dos reconhecedores também é comparado com um oráculo externo mediante a enumeração de todos os campos de até 3 bits. As listas e tuplas utilizadas nos exemplos e no oráculo de teste não participam do reconhecimento. Os resultados obtidos encontram-se em `resultados_testes.txt`.
+Foram definidos, no arquivo `testes.py`, 8 casos de aceitação e 8 de rejeição para cada módulo, totalizando 32 cadeias principais distintas inclusive entre os módulos, todas com pelo menos 18 símbolos e descrições específicas da regra verificada. Seis das oito rejeições do ALL correspondem a cadeias aceitas pelo AP; as duas restantes verificam o reconhecimento independente do ALL. Além desses casos, foram incluídos a entrada vazia e a menor cadeia válida, de 8 caracteres, como casos-limite, 3 testes de integração e 1 teste de erro de alfabeto. O comportamento dos reconhecedores também é comparado com um oráculo externo mediante a enumeração de todos os campos de até 3 bits. As listas e tuplas utilizadas nos exemplos e no oráculo de teste não participam do reconhecimento. Os resultados obtidos encontram-se em `resultados_testes.txt`.
 
 | Entrada | AP | ALL no fluxo completo |
 |---|---|---|
